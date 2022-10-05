@@ -3,5 +3,5 @@
 ## How to Use
 
 ```bash
-yarn preinstall
+yarn && yarn husky install
 ```
