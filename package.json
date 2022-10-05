@@ -7,7 +7,8 @@
     "test": "jest --watch",
     "test:ci": "jest --ci",
     "lint": "next lint",
-    "format": "prettier --write --ignore-path .gitignore ."
+    "format": "prettier --write --ignore-path .gitignore .",
+    "preinstall": "yarn husky install"
   },
   "dependencies": {
     "next": "latest",
