@@ -5,7 +5,10 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -16,9 +19,11 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/pages/*": ["pages/*"],
-      "@/styles/*": ["styles/*"]
+      "@pages/*": ["pages/*"],
+      "@styles/*": ["styles/*"],
+      "@models": ["models"],
+      "@database": ["database"],
+      "@interfaces": ["ts/interfaces"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts"],
