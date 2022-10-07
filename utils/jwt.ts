@@ -10,7 +10,7 @@ export const signToken = (id: string) => {
 
 export const isValidToken = (token: string): Promise<string> => {
   if (!process.env.JWT_SECRET_SEED) {
-    throw new Error('No hay semilla de JWT - Revisar variables de entorno');
+    throw new Error('No hay semilla de JWT - Revisar variables de entorno.');
   }
 
   return new Promise((resolve, reject) => {
