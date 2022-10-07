@@ -24,7 +24,8 @@
       "@models": ["models"],
       "@database": ["database"],
       "@interfaces": ["ts/interfaces"],
-      "@utils": ["utils"]
+      "@utils": ["utils"],
+      "@themes": ["themes"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts"],
