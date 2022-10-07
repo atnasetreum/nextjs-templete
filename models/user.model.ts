@@ -1,3 +1,4 @@
+import argon2 from 'argon2';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,21 +6,24 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  BaseEntity,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  firstName: string;
+  name: string;
 
-  @Column()
-  lastName: string;
+  @Column({ unique: true })
+  email: string;
 
-  @Column()
-  age: number;
+  @Column({ select: false })
+  password: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -29,4 +33,13 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt?: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async emailFormatBeforeInsert() {
+    this.email = this.email.toLocaleLowerCase().trim();
+    if (this.password) {
+      this.password = await argon2.hash(this.password);
+    }
+  }
 }

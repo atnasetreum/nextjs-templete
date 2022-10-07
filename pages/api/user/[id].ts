@@ -2,46 +2,64 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { connectToDatabase } from '@database';
 import { User } from '@models';
-import { PropsApiUser } from '@interfaces';
+import { PropsApi } from '@interfaces';
+import { isValidEmail } from '@utils';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<User>,
 ) {
-  const db = await connectToDatabase();
-  const userRepository = db.getRepository(User);
+  await connectToDatabase();
 
   switch (req.method) {
     case 'GET':
-      return findOne({ req, res, userRepository });
+      return findOne({ req, res });
     case 'PATCH':
-      return update({ req, res, userRepository });
+      return update({ req, res });
     case 'DELETE':
-      return remove({ req, res, userRepository });
+      return remove({ req, res });
   }
 }
 
-async function findOne({ req, res, userRepository }: PropsApiUser) {
-  const { id } = req.query as { id: string };
-  const user = await userRepository.findOneBy({
-    id,
-  });
-  res.status(200).json(user);
+async function findOne({ req, res }: PropsApi) {
+  try {
+    const { id } = req.query as { id: string };
+    const user = await User.findOneBy({
+      id,
+    });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err || 'Bad request' });
+  }
 }
 
-async function update({ req, res, userRepository }: PropsApiUser) {
+async function update({ req, res }: PropsApi) {
   const { id } = req.query as { id: string };
   const { body } = req;
-  await userRepository.update(id, body);
-  const user = await userRepository.findOneBy({
-    id,
-  });
-  res.status(200).json(user);
+
+  if (body.email && !isValidEmail(body.email)) {
+    return res.status(400).json({
+      message: 'El correo no tiene un formato valido',
+    });
+  }
+
+  try {
+    const userPreload = await User.preload({ id, ...body });
+    await User.save(userPreload);
+    const user = await User.findOneBy({ id });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err || 'Bad request' });
+  }
 }
 
-async function remove({ req, res, userRepository }: PropsApiUser) {
-  const { id } = req.query as { id: string };
-  await userRepository.softDelete(id);
-  const user = await userRepository.find({ where: { id }, withDeleted: true });
-  res.status(200).json(user);
+async function remove({ req, res }: PropsApi) {
+  try {
+    const { id } = req.query as { id: string };
+    const user = await User.find({ where: { id } });
+    await User.softRemove(user);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err || 'Bad request' });
+  }
 }

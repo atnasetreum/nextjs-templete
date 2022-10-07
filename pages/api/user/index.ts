@@ -2,34 +2,47 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { connectToDatabase } from '@database';
 import { User } from '@models';
-import { PropsApiUser } from '@interfaces';
+import { PropsApi } from '@interfaces';
+import { isValidEmail } from '@utils';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<User[] | User>,
+  res: NextApiResponse<User[] | User | { message: string }>,
 ) {
-  const db = await connectToDatabase();
-  const userRepository = db.getRepository(User);
+  await connectToDatabase();
 
   switch (req.method) {
     case 'POST':
-      return create({ req, res, userRepository });
+      return create({ req, res });
     case 'GET':
-      return findAll({ req, res, userRepository });
+      return findAll({ req, res });
+    default:
+      res.status(400).json({ message: 'Bad request' });
   }
 }
 
-async function create({ req, res, userRepository }: PropsApiUser) {
-  const { body } = req;
-  const user = new User();
-  user.firstName = body.firstName;
-  user.lastName = body.lastName;
-  user.age = body.age;
-  const userNew = await userRepository.save(user);
-  res.status(200).json(userNew);
+async function create({ req, res }: PropsApi) {
+  const body = req.body;
+  if (!isValidEmail(body.email)) {
+    return res.status(400).json({
+      message: 'El correo no tiene un formato valido',
+    });
+  }
+  try {
+    const userCreate = await User.create(body);
+    const userNew = await User.save(userCreate);
+    const user = await User.findOneBy({ id: userNew.id });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err || 'Bad request' });
+  }
 }
 
-async function findAll({ res, userRepository }: PropsApiUser) {
-  const users = await userRepository.find();
-  res.status(200).json(users);
+async function findAll({ res }: PropsApi) {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(400).json({ message: err || 'Bad request' });
+  }
 }
