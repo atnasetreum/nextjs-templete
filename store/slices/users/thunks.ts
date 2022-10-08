@@ -6,4 +6,4 @@
 //   };
 // };
 
-export const aa = 1
+export const aa = 1;
