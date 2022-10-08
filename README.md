@@ -5,3 +5,7 @@
 ```bash
 yarn && yarn husky install
 ```
+
+```bash
+sudo chown -R $USER postgres
+```

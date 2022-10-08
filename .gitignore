@@ -3,6 +3,7 @@
 
 /postgres
 .env
+/.swc
 
 # dependencies
 /node_modules
