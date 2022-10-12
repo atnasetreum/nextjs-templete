@@ -3,8 +3,9 @@ import { FC, useReducer, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import Cookies from 'js-cookie';
+import { Backdrop, CircularProgress } from '@mui/material';
 
-import { AuthContext, authReducer } from './';
+import { AuthContext, authReducer } from '.';
 import { UserLogin } from '@interfaces';
 import { authService } from '@services';
 import { routesConstants } from '@constants';
@@ -35,6 +36,18 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const killSession = () => {
+    Cookies.remove('token');
+    dispatch({ type: '[Auth] - Logout' });
+    if (router.pathname !== routesConstants.loginPage) {
+      router.replace(routesConstants.loginPage);
+    }
+  };
+
+  const logoutUser = () => {
+    killSession();
+  };
+
   const loginUser = async (
     email: string,
     password: string,
@@ -60,10 +73,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       } = await authService.validateToken();
       createSession(token, user);
     } catch (err) {
-      Cookies.remove('token');
-      if (router.pathname !== routesConstants.loginPage) {
-        router.push(routesConstants.loginPage);
-      }
+      killSession();
     }
   };
 
@@ -72,8 +82,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!state.isLoggedIn && router.pathname !== routesConstants.loginPage) {
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+  }
+
   return (
-    <AuthContext.Provider value={{ ...state, loginUser }}>
+    <AuthContext.Provider value={{ ...state, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

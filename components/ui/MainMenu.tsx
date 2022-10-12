@@ -8,8 +8,10 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined';
-import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
+import {
+  InboxOutlined as InboxOutlinedIcon,
+  MailOutlineOutlined as MailOutlineOutlinedIcon,
+} from '@mui/icons-material';
 
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { toggleMenu } from '@slices';
@@ -50,9 +52,7 @@ export const MainMenu = () => {
             </ListItem>
           ))}
         </List>
-
         <Divider />
-
         <List>
           {menuItems.map((text, index) => (
             <ListItem button key={text} onClick={setToggleMenu}>

@@ -1,3 +1,5 @@
+import { UserLogin } from './user.interface';
+
 export interface LoginServiceProps {
   email: string;
   password: string;
@@ -11,11 +13,5 @@ export interface ResponseLoginService {
 
 interface Data {
   token: string;
-  user: User;
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
+  user: UserLogin;
 }

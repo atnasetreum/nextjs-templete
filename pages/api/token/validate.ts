@@ -15,7 +15,11 @@ export default async function handler(
     case 'GET':
       return checkJWT({ req, res });
     default:
-      res.status(400).json({ message: 'Bad request' });
+      handlerReponseCatch({
+        res,
+        err: 'Method not allowed',
+        statusCode: 405,
+      });
   }
 }
 

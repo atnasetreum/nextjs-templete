@@ -10,6 +10,6 @@ export interface ResponseGlobal {
 
 export interface ResponseGlobalCatch {
   res: NextApiResponse;
-  err: any;
+  err?: any;
   statusCode?: number;
 }

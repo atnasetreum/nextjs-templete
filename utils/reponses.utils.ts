@@ -14,7 +14,7 @@ export const handlerReponseCatch = ({
   err,
   statusCode = 400,
 }: ResponseGlobalCatch) => {
-  const message = err?.detail || err?.message || err;
+  const message = err?.detail || err?.message || err || 'Bad request';
   res.status(statusCode).json({
     message,
     statusCode: err?.code | statusCode,

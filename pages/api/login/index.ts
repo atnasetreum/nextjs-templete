@@ -23,7 +23,7 @@ export default async function handler(
     default:
       handlerReponseCatch({
         res,
-        err: 'Method Not Allowed',
+        err: 'Method not allowed',
         statusCode: 405,
       });
   }
@@ -46,14 +46,18 @@ async function login({ req, res }: PropsApi) {
     });
   }
 
-  const user = await User.findOne({
+  const userPreview = await User.findOne({
     where: {
       email,
     },
-    select: ['id', 'name', 'password'],
+    select: ['password'],
   });
 
-  if (!user) {
+  const user = await User.findOneBy({
+    email,
+  });
+
+  if (!userPreview || !user) {
     return handlerReponseCatch({
       res,
       err: 'Invalid credentials',
@@ -62,7 +66,7 @@ async function login({ req, res }: PropsApi) {
   }
 
   try {
-    const isValid = await argon2.verify(user.password, password);
+    const isValid = await argon2.verify(userPreview.password, password);
     if (!isValid) {
       return handlerReponseCatch({
         res,
@@ -75,9 +79,7 @@ async function login({ req, res }: PropsApi) {
 
     const token = signToken(id);
 
-    const data = { token, user: { id, name: user.name, email } };
-
-    handlerReponse({ res, data });
+    handlerReponse({ res, data: { token, user } });
   } catch (err) {
     handlerReponseCatch({
       res,
