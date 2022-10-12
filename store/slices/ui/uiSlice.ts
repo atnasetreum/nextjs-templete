@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { uiConstants } from '@constants';
 import { UiState } from '@interfaces';
@@ -12,13 +11,10 @@ export const uiSlice = createSlice({
   name: uiConstants.sliceName,
   initialState,
   reducers: {
-    toogleMenu: (state) => {
+    toggleMenu: (state) => {
       state.isOpenMenu = !state.isOpenMenu;
     },
-    // setUsers2: (state, action: PayloadAction<UiState>) => {
-    //   state.isOpenMenu = action.payload;
-    // },
   },
 });
 
-export const { toogleMenu } = uiSlice.actions;
+export const { toggleMenu } = uiSlice.actions;

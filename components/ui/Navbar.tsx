@@ -17,7 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
 import { useAppDispatch } from '@hooks';
-import { toogleMenu } from '@slices';
+import { toggleMenu } from '@slices';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -170,7 +170,7 @@ export function Navbar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={() => dispatch(toogleMenu())}
+            onClick={() => dispatch(toggleMenu())}
           >
             <MenuIcon />
           </IconButton>

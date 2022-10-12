@@ -31,6 +31,10 @@
       "@database/*": ["database/*"],
       "@interfaces": ["ts/interfaces"],
       "@interfaces/*": ["ts/interfaces/*"],
+      "@enums": ["ts/enums"],
+      "@enums/*": ["ts/enums/*"],
+      "@types": ["ts/types"],
+      "@types/*": ["ts/types/*"],
       "@utils": ["utils"],
       "@utils/*": ["utils/*"],
       "@themes": ["themes"],
@@ -42,7 +46,11 @@
       "@hooks": ["hooks"],
       "@hooks/*": ["hooks/*"],
       "@constants": ["constants"],
-      "@constants/*": ["constants/*"]
+      "@constants/*": ["constants/*"],
+      "@services": ["services"],
+      "@services/*": ["services/*"],
+      "@contexts": ["contexts"],
+      "@contexts/*": ["contexts/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts"],

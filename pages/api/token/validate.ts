@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { PropsApi } from '@interfaces';
-import { isValidToken, signToken } from '@utils';
+import { handlerReponse, handlerReponseCatch, isValidToken } from '@utils';
 import { User } from '@models';
 import { connectToDatabase } from '@database';
 
@@ -20,20 +20,25 @@ export default async function handler(
 }
 
 async function checkJWT({ req, res }: PropsApi) {
-  const { authorization } = req.headers;
-  const token = authorization?.split(' ')[1] || '';
+  const { token = '' } = req.cookies;
 
   try {
-    const id = await isValidToken(token);
+    const { id, token: newToken } = await isValidToken(token);
     if (!id) {
-      return res.status(401).json({ message: 'Token JWT no valido' });
+      return handlerReponseCatch({
+        res,
+        err: 'Invalid credentials',
+        statusCode: 401,
+      });
     }
 
     const user = await User.findOneBy({ id });
 
-    const newToken = signToken(id);
-    res.json({ newToken, user });
+    handlerReponse({ res, data: { token: newToken, user } });
   } catch (err) {
-    res.status(400).json({ message: err || 'Bad request' });
+    handlerReponseCatch({
+      res,
+      err,
+    });
   }
 }
