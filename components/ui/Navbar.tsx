@@ -1,4 +1,4 @@
-import { useContext, useState, MouseEvent } from 'react';
+import { useContext, useState, useEffect, MouseEvent } from 'react';
 
 import { styled, alpha } from '@mui/material/styles';
 import {
@@ -15,15 +15,16 @@ import {
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
-  AccountCircle,
+  AccountCircle as AccountCircleIcon,
   Mail as MailIcon,
   Notifications as NotificationsIcon,
   MoreVert as MoreIcon,
+  Contactless as ContactlessIcon,
 } from '@mui/icons-material';
 
 import { useAppDispatch } from '@hooks';
 import { toggleMenu } from '@slices';
-import { AuthContext } from '@contexts';
+import { AuthContext, SocketContext } from '@contexts';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -64,13 +65,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+
 export function Navbar() {
   const { logoutUser } = useContext(AuthContext);
+  const { online, socket } = useContext(SocketContext);
   const dispatch = useAppDispatch();
 
+  const [countNotify, setCountNotify] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    const event = 'update-count-notify';
+    socket?.on(event, () => {
+      setCountNotify((count) => count + 1);
+    });
+    return () => {
+      socket?.off(event);
+    };
+  }, [socket]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -160,7 +174,7 @@ export function Navbar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <AccountCircleIcon />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -202,10 +216,19 @@ export function Navbar() {
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"
+              edge="end"
+              aria-label="socket status"
+              aria-haspopup="true"
+              color={online ? 'inherit' : 'error'}
+            >
+              <ContactlessIcon />
+            </IconButton>
+            <IconButton
+              size="large"
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={countNotify} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
@@ -227,7 +250,7 @@ export function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <AccountCircleIcon />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

@@ -10,5 +10,5 @@ export interface UserLogin {
   email: string;
   created_at: string;
   updated_at: string;
-  deletedAt: null | string;
+  deleted_at: null | string;
 }

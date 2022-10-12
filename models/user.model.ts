@@ -32,7 +32,7 @@ export class User extends BaseEntity {
   updated_at: Date;
 
   @DeleteDateColumn()
-  deletedAt?: Date;
+  deleted_at?: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

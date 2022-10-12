@@ -1,5 +1,3 @@
-import { NextApiRequest } from 'next';
-
 import jwt from 'jsonwebtoken';
 
 export const signToken = (id: string) => {
@@ -35,10 +33,4 @@ export const isValidToken = (
       reject('JWT no es válido');
     }
   });
-};
-
-export const getToken = (req: NextApiRequest) => {
-  const token = req.cookies;
-  //const token = req.cookies?.get('token') || '';
-  return token;
 };

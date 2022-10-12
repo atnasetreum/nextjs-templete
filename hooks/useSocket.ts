@@ -7,7 +7,8 @@ export const useSocket = () => {
   const [socket, setSocket] = useState<Socket>();
 
   useEffect(() => {
-    const socketInitializer = () => {
+    const socketInitializer = async () => {
+      await fetch('/api/socket');
       const socketNew = io();
       setSocket(socketNew);
     };
