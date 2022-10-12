@@ -8,7 +8,6 @@ import { AuthContext, authReducer } from './';
 import { UserLogin } from '@interfaces';
 import { authService } from '@services';
 import { routesConstants } from '@constants';
-import { useNotify } from '@hooks';
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -26,7 +25,6 @@ interface Props {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const router = useRouter();
-  const { notify } = useNotify();
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
 
   const createSession = (token: string, user: UserLogin) => {
@@ -63,7 +61,6 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       createSession(token, user);
     } catch (err) {
       Cookies.remove('token');
-      notify('The session expired');
       if (router.pathname !== routesConstants.loginPage) {
         router.push(routesConstants.loginPage);
       }
