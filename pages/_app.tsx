@@ -13,17 +13,18 @@ import '@styles/global.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
+    <SnackbarProvider maxSnack={3}>
       <SocketProvider>
-        <Provider store={store}>
-          <ThemeProvider theme={lightTheme}>
-            <CssBaseline />
-            <SnackbarProvider maxSnack={3}>
+        <AuthProvider>
+          <Provider store={store}>
+            <ThemeProvider theme={lightTheme}>
+              <CssBaseline />
+
               <Component {...pageProps} />
-            </SnackbarProvider>
-          </ThemeProvider>
-        </Provider>
+            </ThemeProvider>
+          </Provider>
+        </AuthProvider>
       </SocketProvider>
-    </AuthProvider>
+    </SnackbarProvider>
   );
 }

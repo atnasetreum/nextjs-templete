@@ -38,13 +38,11 @@ const SocketHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           if (!user) return disconnectUser(client);
 
-          console.log('[SOCKET] connected => user', user?.email);
+          registerUser(client, user);
 
-          client.join(user.email);
-          connectedClients[client.id] = {
-            socket: client,
-            user,
-          };
+          client.on('disconnect', () => {
+            disconnectUser(client);
+          });
 
           events(client);
         } catch (error) {
@@ -62,8 +60,38 @@ function events(client: Socket) {
   });
 }
 
+function countClients() {
+  return Object.keys(connectedClients).length;
+}
+
+function labelCount() {
+  console.log('[SOCKET] count connected clients', countClients());
+}
+
+function registerUser(client: Socket, user: User) {
+  console.log('[SOCKET] connected => user', user?.email);
+
+  client.join(user.email);
+  connectedClients[client.id] = {
+    socket: client,
+    user,
+  };
+  labelCount();
+}
+
 function disconnectUser(client: Socket) {
-  console.log(`[SOCKET] disconnect => ${client.id}`);
+  const clientId = client.id;
+
+  const socketCurrent = connectedClients[clientId];
+
+  let message = `[SOCKET] disconnect => ${clientId}`;
+  if (socketCurrent) {
+    const user = socketCurrent.user;
+    delete connectedClients[clientId];
+    message = `${message} => user: ${user.email}`;
+  }
+  console.log(message);
+  labelCount();
   client.disconnect();
 }
 

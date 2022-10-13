@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 
 import {
   Avatar,
-  Button,
   CssBaseline,
   TextField,
   FormControlLabel,
@@ -16,7 +15,11 @@ import {
   Typography,
   Container,
 } from '@mui/material';
-import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
+import {
+  LockOutlined as LockOutlinedIcon,
+  Send as SendIcon,
+} from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useNotify } from '@hooks';
 import { isValidEmail } from '@utils';
@@ -46,7 +49,7 @@ function Copyright() {
 }
 
 const LoginPage: NextPage = () => {
-  const { loginUser } = useContext(AuthContext);
+  const { loading, loginUser } = useContext(AuthContext);
   const { notify } = useNotify();
   const router = useRouter();
   const [remember, setRemember] = useState(false);
@@ -143,14 +146,17 @@ const LoginPage: NextPage = () => {
             }
             label="Remember me"
           />
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            loading={loading}
+            loadingPosition="start"
+            startIcon={<SendIcon />}
           >
             Sign In
-          </Button>
+          </LoadingButton>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

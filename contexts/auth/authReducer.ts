@@ -15,12 +15,14 @@ export const authReducer = (
         ...state,
         isLoggedIn: true,
         user: action.payload,
+        loading: true,
       };
     case '[Auth] - Logout':
       return {
         ...state,
         isLoggedIn: false,
         user: undefined,
+        loading: false,
       };
 
     default:

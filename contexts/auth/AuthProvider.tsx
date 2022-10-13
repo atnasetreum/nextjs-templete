@@ -1,4 +1,4 @@
-import { FC, useReducer, useEffect } from 'react';
+import { FC, useReducer, useEffect, useContext } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -9,15 +9,18 @@ import { AuthContext, authReducer } from '.';
 import { UserLogin } from '@interfaces';
 import { authService } from '@services';
 import { routesConstants } from '@constants';
+import { SocketContext } from '@contexts/socket';
 
 export interface AuthState {
   isLoggedIn: boolean;
   user?: UserLogin;
+  loading: boolean;
 }
 
 const AUTH_INITIAL_STATE: AuthState = {
   isLoggedIn: false,
   user: undefined,
+  loading: false,
 };
 
 interface Props {
@@ -27,8 +30,10 @@ interface Props {
 export const AuthProvider: FC<Props> = ({ children }) => {
   const router = useRouter();
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const { connectSocket, disconnectSocket, online } = useContext(SocketContext);
 
   const createSession = (token: string, user: UserLogin) => {
+    connectSocket();
     Cookies.set('token', token);
     dispatch({ type: '[Auth] - Login', payload: user });
     if (router.pathname === routesConstants.loginPage) {
@@ -37,6 +42,9 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   };
 
   const killSession = () => {
+    if (online) {
+      disconnectSocket();
+    }
     Cookies.remove('token');
     dispatch({ type: '[Auth] - Logout' });
     if (router.pathname !== routesConstants.loginPage) {

@@ -8,9 +8,11 @@ interface Props {
 }
 
 export const SocketProvider: FC<Props> = ({ children }) => {
-  const { socket, online } = useSocket();
+  const { socket, online, connectSocket, disconnectSocket } = useSocket();
   return (
-    <SocketContext.Provider value={{ socket, online }}>
+    <SocketContext.Provider
+      value={{ socket, online, connectSocket, disconnectSocket }}
+    >
       {children}
     </SocketContext.Provider>
   );
