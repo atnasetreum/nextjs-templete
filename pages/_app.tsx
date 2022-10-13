@@ -7,24 +7,25 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { lightTheme } from '@themes';
 import { store } from '@store';
-import { AuthProvider, SocketProvider } from '@contexts';
+import { AuthProvider, SocketProvider, SwProvider } from '@contexts';
 
 import '@styles/global.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SnackbarProvider maxSnack={3}>
-      <SocketProvider>
-        <AuthProvider>
-          <Provider store={store}>
-            <ThemeProvider theme={lightTheme}>
-              <CssBaseline />
-
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </Provider>
-        </AuthProvider>
-      </SocketProvider>
+      <SwProvider>
+        <SocketProvider>
+          <AuthProvider>
+            <Provider store={store}>
+              <ThemeProvider theme={lightTheme}>
+                <CssBaseline />
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </Provider>
+          </AuthProvider>
+        </SocketProvider>
+      </SwProvider>
     </SnackbarProvider>
   );
 }

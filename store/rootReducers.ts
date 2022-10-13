@@ -4,6 +4,5 @@ export const rootReducers = {
   reducer: {
     users: usersSlice.reducer,
     iu: uiSlice.reducer,
-    // [todosApi.reducerPath]
   },
 };

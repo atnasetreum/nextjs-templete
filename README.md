@@ -3,5 +3,5 @@
 ## How to Use
 
 ```bash
-yarn && yarn husky install
+yarn && yarn husky install && yarn generate-vapid
 ```

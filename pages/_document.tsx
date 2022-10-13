@@ -9,7 +9,6 @@ import Document, {
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const initalProps = await Document.getInitialProps(ctx);
-
     return initalProps;
   }
 
@@ -22,6 +21,9 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/icon.png"></link>
+          <meta name="theme-color" content="#fff" />
         </Head>
         <body>
           <Main />

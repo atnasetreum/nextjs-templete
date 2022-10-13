@@ -6,14 +6,14 @@ import Cookies from 'js-cookie';
 import { Backdrop, CircularProgress } from '@mui/material';
 
 import { AuthContext, authReducer } from '.';
-import { UserLogin } from '@interfaces';
+import { IUser } from '@interfaces';
 import { authService } from '@services';
 import { routesConstants } from '@constants';
 import { SocketContext } from '@contexts/socket';
 
 export interface AuthState {
   isLoggedIn: boolean;
-  user?: UserLogin;
+  user?: IUser;
   loading: boolean;
 }
 
@@ -32,9 +32,9 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
   const { connectSocket, disconnectSocket, online } = useContext(SocketContext);
 
-  const createSession = (token: string, user: UserLogin) => {
-    connectSocket();
+  const createSession = (token: string, user: IUser) => {
     Cookies.set('token', token);
+    connectSocket();
     dispatch({ type: '[Auth] - Login', payload: user });
     if (router.pathname === routesConstants.loginPage) {
       router.replace(routesConstants.root);

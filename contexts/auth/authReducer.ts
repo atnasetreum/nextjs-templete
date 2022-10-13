@@ -1,8 +1,8 @@
 import { AuthState } from './';
-import { UserLogin } from '@interfaces';
+import { IUser } from '@interfaces';
 
 type AuthActionType =
-  | { type: '[Auth] - Login'; payload: UserLogin }
+  | { type: '[Auth] - Login'; payload: IUser }
   | { type: '[Auth] - Logout' };
 
 export const authReducer = (

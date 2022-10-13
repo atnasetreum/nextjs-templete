@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 
-import { UserLogin } from '@interfaces';
+import { IUser } from '@interfaces';
 
 interface ContextProps {
   isLoggedIn: boolean;
   loading: boolean;
-  user?: UserLogin;
+  user?: IUser;
   loginUser: (email: string, password: string) => Promise<boolean>;
   logoutUser: () => void;
 }

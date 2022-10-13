@@ -1,28 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { usersConstants } from '@constants';
+import { IUser } from '@interfaces';
 
-interface User {
-  name: string;
-  email: string;
+interface UsersState {
+  data: IUser[];
+  isLoading: boolean;
+  isError: string;
 }
 
-interface CounterState {
-  users: User[];
-}
-
-const initialState: CounterState = {
-  users: [],
+const initialState: UsersState = {
+  data: [],
+  isLoading: false,
+  isError: '',
 };
 
 export const usersSlice = createSlice({
   name: usersConstants.sliceName,
   initialState,
   reducers: {
-    setUsers: (state, action: PayloadAction<User[]>) => {
-      state.users = action.payload;
+    startLoadingUser: (state) => {
+      state.isLoading = true;
+      state.isError = '';
+    },
+    setUsers: (state, action: PayloadAction<IUser[]>) => {
+      state.isLoading = false;
+      state.isError = '';
+      state.data = action.payload;
     },
   },
 });
 
-export const { setUsers } = usersSlice.actions;
+export const { startLoadingUser, setUsers } = usersSlice.actions;

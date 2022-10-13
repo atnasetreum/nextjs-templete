@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import io, { Socket } from 'socket.io-client';
+import Cookies from 'js-cookie';
 
 export const useSocket = () => {
   const [online, setOnline] = useState(false);
@@ -8,7 +9,13 @@ export const useSocket = () => {
 
   const connectSocket = useCallback(async () => {
     await fetch('/api/socket');
-    const socketNew = io({ autoConnect: true, forceNew: true });
+    const socketNew = io({
+      autoConnect: true,
+      forceNew: true,
+      auth: {
+        token: Cookies.get('token') || '',
+      },
+    });
     setSocket(socketNew);
   }, []);
 

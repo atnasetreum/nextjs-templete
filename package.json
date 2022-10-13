@@ -7,7 +7,8 @@
     "test": "jest --watch",
     "test:ci": "jest --ci",
     "lint": "next lint",
-    "format": "prettier . '!./postgres' --write --ignore-path .gitignore ."
+    "format": "prettier . '!./postgres' --write --ignore-path .gitignore .",
+    "generate-vapid": "./node_modules/web-push/src/cli.js generate-vapid-keys --json > config/vapid.json"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -16,8 +17,6 @@
     "@mui/lab": "^5.0.0-alpha.103",
     "@mui/material": "^5.10.8",
     "@reduxjs/toolkit": "^1.8.5",
-    "@types/js-cookie": "^3.0.2",
-    "@types/jsonwebtoken": "^8.5.9",
     "argon2": "^0.29.1",
     "axios": "^1.1.2",
     "js-cookie": "^3.0.1",
@@ -31,13 +30,17 @@
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "web-push": "^3.5.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.2.0",
     "@testing-library/user-event": "14.2.0",
+    "@types/js-cookie": "^3.0.2",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/react": "18.0.9",
+    "@types/web-push": "^3.3.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "eslint": "^8.24.0",
     "eslint-config-next": "^12.3.1",

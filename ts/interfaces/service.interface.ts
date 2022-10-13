@@ -1,4 +1,4 @@
-import { UserLogin } from './user.interface';
+import { IUser } from './user.interface';
 
 export interface LoginServiceProps {
   email: string;
@@ -13,5 +13,11 @@ export interface ResponseLoginService {
 
 interface Data {
   token: string;
-  user: UserLogin;
+  user: IUser;
+}
+
+export interface ResponseUsersFindAllService {
+  data: IUser[];
+  message: string;
+  statusCode: number;
 }

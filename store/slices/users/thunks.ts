@@ -1,9 +1,17 @@
-// import { AppDispatch, RootState } from '@store';
+import { usersService } from '@services';
+import { AppDispatch } from '@store';
+import { setUsers, startLoadingUser } from './usersSlice';
 
-// export const getPokemons = () => {
-//   return (dispatch: AppDispatch, getState: RootState) => {
+export const getUsers = () => {
+  //return async (dispatch: AppDispatch, getState: RootState) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(startLoadingUser());
 
-//   };
-// };
-
-export const aa = 1;
+    try {
+      const { data: users } = await usersService.findAll();
+      dispatch(setUsers(users));
+    } catch (error) {
+      dispatch(setUsers([]));
+    }
+  };
+};

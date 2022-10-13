@@ -4,7 +4,7 @@ export interface UserSeed {
   password: string;
 }
 
-export interface UserLogin {
+export interface IUser {
   id: string;
   name: string;
   email: string;

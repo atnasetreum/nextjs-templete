@@ -30,8 +30,7 @@ const SocketHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       await connectToDatabase();
 
       io.on('connection', async (client) => {
-        const { token = '' } = req.cookies;
-
+        const { token = '' } = client.handshake.auth;
         try {
           const { id } = await isValidToken(token);
           const user = await User.findOneBy({ id });

@@ -20,11 +20,13 @@ import {
   Notifications as NotificationsIcon,
   MoreVert as MoreIcon,
   Contactless as ContactlessIcon,
+  NotificationsOff as NotificationsOffIcon,
 } from '@mui/icons-material';
 
-import { useAppDispatch } from '@hooks';
+import { useAppDispatch, useNotify } from '@hooks';
 import { toggleMenu } from '@slices';
-import { AuthContext, SocketContext } from '@contexts';
+import { AuthContext, SocketContext, SwContext } from '@contexts';
+import { getPermission } from '@utils';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,7 +71,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export function Navbar() {
   const { logoutUser } = useContext(AuthContext);
   const { online, socket } = useContext(SocketContext);
+  const { isActivePushNotifications, activeNotificationWeb, cancelSubscribe } =
+    useContext(SwContext);
   const dispatch = useAppDispatch();
+  const { notify } = useNotify();
 
   const [countNotify, setCountNotify] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -232,15 +237,32 @@ export function Navbar() {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {isActivePushNotifications ? (
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={async () => cancelSubscribe()}
+              >
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            ) : (
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+                onClick={async () => {
+                  const isActive = await getPermission(notify);
+                  if (isActive) {
+                    activeNotificationWeb();
+                  }
+                }}
+              >
+                <NotificationsOffIcon color="error" />
+              </IconButton>
+            )}
             <IconButton
               size="large"
               edge="end"
