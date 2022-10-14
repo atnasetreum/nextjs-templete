@@ -1,18 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import webpush from 'web-push';
-
 import { PropsApi } from '@interfaces';
 import { handlerReponse, handlerReponseCatch, isValidToken } from '@utils';
 import { User } from '@models';
 import { connectToDatabase } from '@database';
-import vapidKeys from '@config/vapid.json';
-
-webpush.setVapidDetails(
-  'mailto:eduardo-266@hotmail.com',
-  vapidKeys.publicKey,
-  vapidKeys.privateKey,
-);
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,20 +35,7 @@ async function saveSubscribe({ res, req }: PropsApi) {
     });
   }
 
-  user.subscription = subscription;
-
-  webpush
-    .sendNotification(
-      subscription,
-      JSON.stringify({ titulo: 'hola', cuerpo: 'mundo' }),
-    )
-    .then(() => console.log('Notification web push send'))
-    .catch((err) => {
-      if (err.statusCode === 410) {
-        user.subscription = undefined;
-      }
-    });
-
+  user.subscription = JSON.stringify(subscription);
   user.save();
   handlerReponse({ res, data: user });
 }

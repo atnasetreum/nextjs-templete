@@ -21,16 +21,10 @@ self.addEventListener('activate', () => {
 
 self.addEventListener('push', (e) => {
   console.log('[SW] push received...');
+  const { title, body } = JSON.parse(e.data.text());
 
-  // console.log(e);
-
-  const data = JSON.parse(e.data.text());
-
-  // console.log(data);
-
-  const title = data.titulo;
   const options = {
-    body: data.cuerpo,
+    body,
     // icon: 'img/icons/icon-72x72.png',
     //////////////icon: `img/avatars/${data.usuario}.jpg`,
     badge: 'img/favicon.ico',

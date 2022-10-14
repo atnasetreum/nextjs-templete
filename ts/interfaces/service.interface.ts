@@ -21,3 +21,9 @@ export interface ResponseUsersFindAllService {
   message: string;
   statusCode: number;
 }
+
+export interface ResponseSendWebpushSw {
+  data: string;
+  message: string;
+  statusCode: number;
+}

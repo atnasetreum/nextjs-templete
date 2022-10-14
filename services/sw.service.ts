@@ -1,5 +1,9 @@
 import axios from './axios.wrapper';
-import { ResponseUsersFindAllService, WsSubcribeProps } from '@interfaces';
+import {
+  ResponseSendWebpushSw,
+  ResponseUsersFindAllService,
+  WsSubcribeProps,
+} from '@interfaces';
 
 async function subscribe(subscription: WsSubcribeProps) {
   const { data } = await axios.post<ResponseUsersFindAllService>(
@@ -9,6 +13,15 @@ async function subscribe(subscription: WsSubcribeProps) {
   return data;
 }
 
+async function sendWebpush(payload: { title: string; body: string }) {
+  const { data } = await axios.post<ResponseSendWebpushSw>(
+    '/sw/webpush',
+    payload,
+  );
+  return data;
+}
+
 export const swService = {
   subscribe,
+  sendWebpush,
 };

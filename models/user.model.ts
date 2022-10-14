@@ -25,7 +25,7 @@ export class User extends BaseEntity {
   @Column({ select: false })
   password: string;
 
-  @Column('jsonb', { default: {}, nullable: true })
+  @Column('text', { default: '' })
   subscription?: string;
 
   @CreateDateColumn()

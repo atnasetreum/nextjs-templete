@@ -6,9 +6,11 @@ import { styled } from '@mui/material/styles';
 import { Box, Paper, Grid, Button } from '@mui/material';
 
 import { MainLayout } from '@components/layouts';
-import { AuthContext, SocketContext } from '@contexts';
+import { AuthContext, SocketContext, SwContext } from '@contexts';
 import { getUsers } from '@slices/users';
-import { useAppSelector, useAppDispatch } from '@hooks';
+import { useAppSelector, useAppDispatch, useNotify } from '@hooks';
+import { swService } from '@services';
+import { handleError } from '@utils';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -21,7 +23,9 @@ const Item = styled(Paper)(({ theme }) => ({
 const HomePage: NextPage = () => {
   const { user } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
+  const { isActivePushNotifications } = useContext(SwContext);
   const dispatch = useAppDispatch();
+  const { notify } = useNotify();
 
   const { data: users } = useAppSelector((state) => state.users);
 
@@ -31,6 +35,13 @@ const HomePage: NextPage = () => {
 
   const handleClick = () => {
     socket?.emit('click-button');
+  };
+
+  const handleClickWebpush = () => {
+    if (!isActivePushNotifications) return notify('Web notification disable');
+    swService
+      .sendWebpush({ title: 'Test', body: 'Web Notification' })
+      .catch((err) => handleError(err, notify));
   };
 
   return (
@@ -43,7 +54,16 @@ const HomePage: NextPage = () => {
         >
           <Grid item xs={2} sm={4} md={4}>
             <Button color="primary" variant="contained" onClick={handleClick}>
-              Emit event = {user?.email}
+              Socket notification = {user?.email}
+            </Button>
+          </Grid>
+          <Grid item xs={2} sm={4} md={4}>
+            <Button
+              color={isActivePushNotifications ? 'success' : 'error'}
+              variant="contained"
+              onClick={handleClickWebpush}
+            >
+              Send Web Notification
             </Button>
           </Grid>
           <Grid item xs={2} sm={4} md={4}>

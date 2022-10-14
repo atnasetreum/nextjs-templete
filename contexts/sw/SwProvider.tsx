@@ -71,6 +71,7 @@ export const SwProvider: FC<Props> = ({ children }) => {
       }
     };
     registerSubscription();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   const activeNotificationWeb = async () => {
@@ -79,28 +80,20 @@ export const SwProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (navigator.serviceWorker) {
-      // window.addEventListener('load', function () {
       navigator.serviceWorker.register('/sw.js').then(
         async function (reg) {
           console.log(
             'Service Worker registration successful with scope: ',
             reg.scope,
           );
-
           setSwReg(reg);
-          // swReg.pushManager.getSubscription();
-
-          // Notification.requestPermission().then((result) => {
-          //   console.log({ result });
-          //   reg.showNotification('hola mundo');
-          // });
         },
         function (err) {
           console.log('Service Worker registration failed: ', err);
         },
       );
-      // });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
