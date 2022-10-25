@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^1.8.5",
     "argon2": "^0.29.1",
     "axios": "^1.1.2",
+    "formik": "^2.2.9",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "next": "latest",
@@ -31,9 +32,11 @@
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
     "typeorm": "^0.3.10",
-    "web-push": "^3.5.0"
+    "web-push": "^3.5.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.19.6",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.2.0",
     "@testing-library/user-event": "14.2.0",
@@ -42,6 +45,7 @@
     "@types/react": "18.0.9",
     "@types/web-push": "^3.3.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "babel-loader": "^8.2.5",
     "eslint": "^8.24.0",
     "eslint-config-next": "^12.3.1",
     "eslint-config-prettier": "^8.5.0",

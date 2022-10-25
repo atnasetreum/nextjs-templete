@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Paper, Grid, Button } from '@mui/material';
 
 import { MainLayout } from '@components/layouts';
+import { FormCustom } from '@components/ui';
 import { AuthContext, SocketContext, SwContext } from '@contexts';
 import { getUsers } from '@slices/users';
 import { useAppSelector, useAppDispatch, useNotify } from '@hooks';
@@ -72,6 +73,9 @@ const HomePage: NextPage = () => {
                 <p key={user.id}>{user.name}</p>
               ))}
             </Item>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12}>
+            <FormCustom />
           </Grid>
         </Grid>
       </Box>
