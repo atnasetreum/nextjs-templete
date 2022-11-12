@@ -21,12 +21,13 @@ import {
 } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useNotify } from '@hooks';
+import { useAppDispatch, useNotify } from '@hooks';
 import { isValidEmail } from '@utils';
 import { users } from '@database/seeds/user.seed';
 import { environments } from '@enums';
 import { routesConstants } from '@constants';
 import { AuthContext } from '@contexts/auth';
+//import { getOrganizationTask } from '@store/slices';
 
 const isDev = process.env.NODE_ENV === environments.dev;
 
@@ -57,6 +58,15 @@ const LoginPage: NextPage = () => {
   const [passwordInput, setPasswordInput] = useState(
     isDev ? users[0].password : '',
   );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // dispatch(
+    //   getOrganizationTask({
+    //     carrier: 'UPS2',
+    //   }),
+    // );
+  }, [dispatch]);
 
   useEffect(() => {
     const emailCache = localStorage.getItem('email') || '';

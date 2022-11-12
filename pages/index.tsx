@@ -31,7 +31,7 @@ const HomePage: NextPage = () => {
   const { data: users } = useAppSelector((state) => state.users);
 
   useEffect(() => {
-    dispatch(getUsers());
+    //dispatch(getUsers());
   }, [dispatch]);
 
   const handleClick = () => {
