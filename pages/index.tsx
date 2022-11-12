@@ -8,7 +8,7 @@ import { Box, Paper, Grid, Button } from '@mui/material';
 import { MainLayout } from '@components/layouts';
 import { FormCustom } from '@components/ui';
 import { AuthContext, SocketContext, SwContext } from '@contexts';
-import { getUsers } from '@slices/users';
+//import { getUsers } from '@slices/users';
 import { useAppSelector, useAppDispatch, useNotify } from '@hooks';
 import { swService } from '@services';
 import { handleError } from '@utils';
