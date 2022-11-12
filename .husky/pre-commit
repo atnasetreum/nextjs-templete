@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn tsc --noEmit && yarn lint && yarn format && yarn test:ci
+yarn tsc --noEmit 
+yarn lint 
+yarn format 
+yarn test:ci
