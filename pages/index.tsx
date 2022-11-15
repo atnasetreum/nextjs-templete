@@ -1,15 +1,14 @@
 import { useContext, useEffect } from 'react';
-
 import { NextPage } from 'next';
-
 import { styled } from '@mui/material/styles';
 import { Box, Paper, Grid, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { MainLayout } from '@components/layouts';
 import { FormCustom } from '@components/ui';
 import { AuthContext, SocketContext, SwContext } from '@contexts';
 //import { getUsers } from '@slices/users';
-import { useAppSelector, useAppDispatch, useNotify } from '@hooks';
+import { useAppSelector, useAppDispatch, useNotify, useUsers } from '@hooks';
 import { swService } from '@services';
 import { handleError } from '@utils';
 
@@ -29,6 +28,8 @@ const HomePage: NextPage = () => {
   const { notify } = useNotify();
 
   const { data: users } = useAppSelector((state) => state.users);
+
+  const { usersQuery, postsQuery } = useUsers();
 
   useEffect(() => {
     //dispatch(getUsers());
@@ -76,6 +77,47 @@ const HomePage: NextPage = () => {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <FormCustom />
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          <Grid item xs={12} sm={12} md={12}>
+            <LoadingButton
+              onClick={() => usersQuery.refetch}
+              loading={usersQuery.isFetching}
+              variant="outlined"
+            >
+              Refetch posts
+            </LoadingButton>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6}>
+            {usersQuery.isLoading ? (
+              <span>Loading...</span>
+            ) : usersQuery.isError ? (
+              <span>Error: {`${usersQuery.error}`}</span>
+            ) : (
+              usersQuery.data.map((post) => (
+                <p key={post.id}>
+                  {post.id}: {post.email}
+                </p>
+              ))
+            )}
+          </Grid>
+          <Grid item xs={6} sm={6} md={6}>
+            {postsQuery.isLoading ? (
+              <span>Loading...</span>
+            ) : postsQuery.isError ? (
+              <span>Error: {`${postsQuery.error}`}</span>
+            ) : (
+              postsQuery.data.map((post) => (
+                <p key={post.id}>
+                  {post.id}: {post.title}
+                </p>
+              ))
+            )}
           </Grid>
         </Grid>
       </Box>
